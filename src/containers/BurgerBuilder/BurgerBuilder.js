@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Burger from '../../components/Burger/Burger';
+import OrderSummary from '../../components/OrderSummary/OrderSummary';
+import Modal from '../../components/UI/Modal/Modal';
 
 const Ingredient_Prices = {
     salad: 0.5,
@@ -18,7 +20,13 @@ class BurgerBuilder extends Component {
             bacon: 0
         },
         totalPrice: 4,
-        purchasable: false
+        purchasable: false,
+        purchasing: false
+    }
+    purchasingHandler = () =>{
+        this.setState({
+            purchasing: !this.state.purchasing
+        })
     }
     addIngredientHandler = (type) => {
         
@@ -67,6 +75,9 @@ class BurgerBuilder extends Component {
             purchasable: sum > 0
         })
     }
+    continueHandler(){
+        alert('You continue')
+    }
     render() {
         const disabledInfo = {
             ...this.state.ingredients
@@ -77,10 +88,14 @@ class BurgerBuilder extends Component {
         return (
             <div>
                 {console.log(disabledInfo)}
+                    {this.state.purchasing ? <Modal modelClosed={this.purchasingHandler} show={this.state.purchasing}>
+                    <OrderSummary ingredients={this.state.ingredients} onCancel={this.purchasingHandler} onContinue={this.continueHandler} 
+                    totalPrice={this.state.totalPrice}/>
+                    </Modal> : <></>}
                 <Burger ingredients={this.state.ingredients} />
+                
                 <BuildControls addIngredientHandler={this.addIngredientHandler} removeIngredient={this.removeIngredientHandler} disabled={disabledInfo}
-                totalPrice={this.state.totalPrice} purchasable={this.state.purchasable}/>
-                {console.log("skjhs",this.state.purchasable)}
+                totalPrice={this.state.totalPrice} purchasable={this.state.purchasable} ordered={this.purchasingHandler} />
             </div>
         );
     }

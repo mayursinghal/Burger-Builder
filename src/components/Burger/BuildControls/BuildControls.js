@@ -19,7 +19,7 @@ class BuildControls extends Component{
                     removed={() => this.props.removeIngredient(ctrl.type)}
                     disabled={this.props.disabled[ctrl.type]}/>)}
                     {console.log("purchasable",this.props.purchasable)}
-                <button className="OrderButton" disabled={!this.props.purchasable}>ORDER NOW</button>
+                <button className="OrderButton" onClick={this.props.ordered} disabled={!this.props.purchasable}>ORDER NOW</button>
             </div>
         )
     }
